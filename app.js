@@ -1,4 +1,4 @@
-import greet from './greet';
+import { greet }  from './greet';
 import camera from './camera';
 
 var content = document.getElementById('content');

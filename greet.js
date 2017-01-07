@@ -1,3 +1,3 @@
-const greet = who => 'Hellow ' + who + '!!';
+export const greet = who => 'Hellow ' + who + '!!';
 
-export default greet;
+export const sum = (a, b) => a + b;
