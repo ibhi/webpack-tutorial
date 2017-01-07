@@ -10,8 +10,9 @@ var entry = PRODUCTION
         './app.js',
         'webpack/hot/dev-server',
         'webpack-dev-server/client?http://localhost:8080'
-      ]
-var sourcemap = PRODUCTION ? '' : 'sourcemap';
+      ];
+
+var sourcemap = PRODUCTION ? '' : 'source-map';
 
 var plugins = PRODUCTION 
   ?   [
@@ -26,26 +27,28 @@ var plugins = PRODUCTION
   :   [
         new webpack.HotModuleReplacementPlugin()
       ];
-console.log(plugins);
+
 module.exports = {
+  devtool: sourcemap,
   entry: entry, // It can be a just a string of file name as well
-  output: {
-    filename: 'bundle.js',
-    path: path.join(__dirname, './dist'),
-    publicPath: '/dist'
-  },
   plugins: plugins,
   module: {
     loaders: [
       {
         test: /.\js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-        query: {
-          presets: ['es2015', 'stage-0']
-        }
+        loaders: ['babel-loader'],
+        exclude: /node_modules/
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        loaders: ['file-loader'],
+        exclude: /node_modules/
       }
     ]
   },
-  devtool: sourcemap,
+  output: {
+    path: path.join(__dirname, './dist'),
+    publicPath: '/dist/',
+    filename: 'bundle.js'
+  },
 };
