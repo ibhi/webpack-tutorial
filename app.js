@@ -1,3 +1,4 @@
+require('./styles/global-style.css');
 import { greet }  from './greet';
 import camera from './camera';
 
