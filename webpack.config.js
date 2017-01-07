@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var PRODUCTION = process.env.NODE_ENV === 'production';
 var DEVELOPMENT = process.env.NODE_ENV === 'development';
@@ -28,6 +29,8 @@ var plugins = PRODUCTION
         new webpack.HotModuleReplacementPlugin()
       ];
 
+plugins.push(new ExtractTextPlugin('style.css'));
+
 module.exports = {
   devtool: sourcemap,
   entry: entry, // It can be a just a string of file name as well
@@ -46,7 +49,10 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loaders: ['style-loader', 'css-loader'],
+        loader: ExtractTextPlugin.extract({
+          loader: 'css-loader',
+          fallbackLoader: 'style-loader'
+        }),
         exclude: /node_modules/
       },
     ]
