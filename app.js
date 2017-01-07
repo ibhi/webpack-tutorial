@@ -1,4 +1,4 @@
-var greet = require('./greet');
+import greet from './greet';
 
 var content = document.getElementById('content');
 

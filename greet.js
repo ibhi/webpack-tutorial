@@ -1,5 +1,4 @@
-function greet(who) {
-  return 'Hello ' + who + '!!';
-}
+const greet = who => 'Hello ' + who + '!!';
 
-module.exports = greet;
+export default greet;
+
