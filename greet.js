@@ -1,3 +1,3 @@
-const greet = who => 'Hello ' + who + '!!';
+const greet = who => 'Hellow ' + who + '!!';
 
 export default greet;

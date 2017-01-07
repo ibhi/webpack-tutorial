@@ -4,6 +4,13 @@ var webpack = require('webpack');
 var PRODUCTION = process.env.NODE_ENV === 'production';
 var DEVELOPMENT = process.env.NODE_ENV === 'development';
 
+var entry = PRODUCTION 
+  ?   ['./app.js']
+  :   [
+        './app.js',
+        'webpack/hot/dev-server',
+        'webpack-dev-server/client?http://localhost:8080'
+      ]
 var sourcemap = PRODUCTION ? '' : 'sourcemap';
 
 var plugins = PRODUCTION 
@@ -16,13 +23,16 @@ var plugins = PRODUCTION
           mangle: true
         })
       ]
-  :   [];
-
+  :   [
+        new webpack.HotModuleReplacementPlugin()
+      ];
+console.log(plugins);
 module.exports = {
-  entry: './app.js', // It can be a just a string of file name as well
+  entry: entry, // It can be a just a string of file name as well
   output: {
     filename: 'bundle.js',
-    path: path.join(__dirname, './dist')
+    path: path.join(__dirname, './dist'),
+    publicPath: '/dist'
   },
   plugins: plugins,
   module: {
@@ -37,5 +47,5 @@ module.exports = {
       }
     ]
   },
-  devtool: sourcemap
+  devtool: sourcemap,
 };
