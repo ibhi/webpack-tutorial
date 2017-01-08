@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var HTMLWebpackPlugin = require('html-webpack-plugin');
 
 var PRODUCTION = process.env.NODE_ENV === 'production';
 var DEVELOPMENT = process.env.NODE_ENV === 'development';
@@ -23,13 +24,24 @@ var plugins = PRODUCTION
             warnings: true
           },
           mangle: true
+        }),
+        new ExtractTextPlugin('style-[hash:12].css'),
+        new HTMLWebpackPlugin({
+          template: 'index-template.html'
         })
       ]
   :   [
         new webpack.HotModuleReplacementPlugin()
       ];
 
-plugins.push(new ExtractTextPlugin('style.css'));
+plugins.push();
+
+var cssLoader = PRODUCTION 
+  ?   ExtractTextPlugin.extract({
+        loader: 'css-loader?minimize&colormin!sass-loader',
+        fallbackLoader: 'style-loader'
+      })
+  :   'style-loader!css-loader!sass-loader';
 
 module.exports = {
   devtool: sourcemap,
@@ -49,17 +61,14 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract({
-          loader: 'css-loader!sass-loader',
-          fallbackLoader: 'style-loader'
-        }),
+        loader: cssLoader,
         exclude: /node_modules/
       },
     ]
   },
   output: {
     path: path.join(__dirname, './dist'),
-    publicPath: '/dist/',
-    filename: 'bundle.js'
+    publicPath: PRODUCTION ? '/' : '/dist/',
+    filename: PRODUCTION ? 'bundle-[hash:12].min.js' : 'bundle.js'
   },
 };
