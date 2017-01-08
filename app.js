@@ -1,4 +1,4 @@
-require('./styles/global-style.css');
+require('./styles/global-style.scss');
 import { greet }  from './greet';
 import camera from './camera';
 
